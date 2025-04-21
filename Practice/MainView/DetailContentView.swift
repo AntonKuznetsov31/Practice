@@ -97,7 +97,7 @@ struct DetailContentView: View {
     private func contentView(for model: DetailContentViewModel.DataSource) -> some View {
         VStack(spacing: 16) {
             ZStack(alignment: .bottomTrailing) {
-                asyncImage(for: viewModel.dataSource.imageURL)
+                asyncImage(for: viewModel.dataSource.imageUrl)
                 DonutChartView(currentSegmentIndex: 0)
                     .padding(.trailing, 12)
                     .padding(.bottom, -12)

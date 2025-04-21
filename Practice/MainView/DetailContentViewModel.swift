@@ -11,12 +11,12 @@ import Foundation
 final public class DetailContentViewModel: ObservableObject {
     
     struct DataSource: Decodable {
-        public let imageURL: String
+        public let imageUrl: String
         public let titleText: String
         public let descriptionText: String
     }
     
-    @Published var dataSource: DataSource = .init(imageURL: "", titleText: "", descriptionText: "")
+    @Published var dataSource: DataSource = .init(imageUrl: "", titleText: "", descriptionText: "")
     @Published var error: String?
     
     private let interactor: DetailContentInteraction
