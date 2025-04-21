@@ -8,27 +8,19 @@
 import Foundation
 
 protocol DetailContentInteraction {
-    func getData() async throws -> DetailModel
+    func fetchDetail() async throws -> DetailContentViewModel.DataSource
 }
 
 final class DetailContentInteractor: DetailContentInteraction {
     
-    private let networkService: NetworkService
+    private let networkService: NetworkServiceProtocol
+    private let detailURL = URL(string: "https://run.mocky.io/v3/38a8e733-a0b8-46b9-adb6-a215d44d328b")!
     
-    init(networkService: NetworkService) {
+    init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }
     
-    func getData() async throws -> DetailModel {
-        return try await withCheckedThrowingContinuation { continuation in
-            networkService.getData() { result in
-                switch result {
-                case .success(let success):
-                    continuation.resume(returning: success)
-                case .failure(let failure):
-                    continuation.resume(throwing: failure)
-                }
-            }
-        }
+    func fetchDetail() async throws -> DetailContentViewModel.DataSource {
+        try await networkService.fetch(from: detailURL)
     }
 }

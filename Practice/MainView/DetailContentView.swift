@@ -29,7 +29,7 @@ struct DetailContentView: View {
     
     var body: some View {
         ScrollView {
-            contentView(for: viewModel.model)
+            contentView(for: viewModel.dataSource)
         }
         .ignoresSafeArea()
     }
@@ -75,14 +75,7 @@ struct DetailContentView: View {
                     .offset(x: 0, y: self.getOffsetForHeaderImage(geometry))
                     .accessibilityHidden(true)
             }, placeholder: {
-                Image("wallpaper")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width, height: self.getHeightForHeaderImage(geometry))
-                    .blur(radius: self.getBlurRadiusForImage(geometry))
-                    .clipped()
-                    .offset(x: 0, y: self.getOffsetForHeaderImage(geometry))
-                    .accessibilityHidden(true)
+                asyncImageProgressView
             })
         }
         .frame(height: imageHeight)
@@ -90,15 +83,12 @@ struct DetailContentView: View {
     
     private func titles(for model: DetailContentViewModel.DataSource) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text(model.title)
+            Text(viewModel.dataSource.titleText)
                 .font(.body)
                 .foregroundStyle(Color.black)
-            
-            if let description = model.description {
-                Text(description)
-                    .font(.body)
-                    .foregroundStyle(Color.gray)
-            }
+            Text(viewModel.dataSource.descriptionText)
+                .font(.body)
+                .foregroundStyle(Color.gray)
         }
         .padding(.init(top: 0, leading: 16, bottom: 0, trailing: 16))
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -107,7 +97,7 @@ struct DetailContentView: View {
     private func contentView(for model: DetailContentViewModel.DataSource) -> some View {
         VStack(spacing: 16) {
             ZStack(alignment: .bottomTrailing) {
-                asyncImage(for: model.imageName)
+                asyncImage(for: viewModel.dataSource.imageURL)
                 DonutChartView(currentSegmentIndex: 0)
                     .padding(.trailing, 12)
                     .padding(.bottom, -12)
